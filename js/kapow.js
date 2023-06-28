@@ -4,8 +4,11 @@ const headers = {
   "X-Parse-REST-API-Key": "3dsu1YIrPHuRqZGhxy2JebN2Ii9kmWjhYTfuSTq7",
   "Content-Type": "application/json"
 };
+const currentUrl = window.location.href;
+const urlWithoutQueryParams = currentUrl.split('?')[0].split('#')[0];
+
 const body = {
-  url: window.location.href
+  url: urlWithoutQueryParams
 };
 
 fetch(endpoint, {
