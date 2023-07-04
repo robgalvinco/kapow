@@ -2,3 +2,5 @@
 *.zip
 *.mp4
 */node_modules
+fa/.DS_Store
+images/.DS_Store
