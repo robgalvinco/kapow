@@ -9,10 +9,12 @@
   const urlWithoutQueryParams = currentUrl.split('?')[0].split('#')[0];
 
   // Check if the currentUrl contains "/manage/site_builder"
+  console.log(currentUrl);
   if (currentUrl.includes("/manage/site_builder")) {
     // Skip the fetch POST request
     console.log("skipping");
   } else {
+    console.log("kapow");
     const body = {
       url: urlWithoutQueryParams
     };
