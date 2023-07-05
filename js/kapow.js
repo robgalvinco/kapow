@@ -11,25 +11,27 @@
   // Check if the currentUrl contains "/manage/site_builder"
   if (currentUrl.includes("/manage/site_builder")) {
     // Skip the fetch POST request
-    return;
+    console.log("skipping");
+  } else {
+    const body = {
+      url: urlWithoutQueryParams
+    };
+  
+    fetch(endpoint, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body)
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response data
+        // console.log(data);
+      })
+      .catch(error => {
+        // Handle any errors
+        // console.error(error);
+      });    
   }
 
-  const body = {
-    url: urlWithoutQueryParams
-  };
 
-  fetch(endpoint, {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify(body)
-  })
-    .then(response => response.json())
-    .then(data => {
-      // Handle the response data
-      // console.log(data);
-    })
-    .catch(error => {
-      // Handle any errors
-      // console.error(error);
-    });
 })();
