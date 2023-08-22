@@ -22,8 +22,7 @@ if (window.location.href.includes('/certificates/')) {
 if (window.location.href.includes('/take/')) {
 $(document).ready(function () {
     var injected = false;
-    if(typeof(CoursePlayerV2) !== 'undefined') {
-        CoursePlayerV2.on('hooks:contentDidChange', function(data) {
+    const injectShareButtons = function(){
         var certLink = $('.take a[href*="/certificates/"]:first').attr('href'); 
         var baseUrl = window.location.origin;
         if(typeof(certLink)!="undefined" && certLink !=""){
@@ -52,8 +51,17 @@ $(document).ready(function () {
 
             injected= true;
 
-        }
+        }    
+    }
 
+    if(typeof(CoursePlayerV2) !== 'undefined') {
+
+        CoursePlayerV2.on('hooks:enrollmentWasCompleted', function(data) {
+            injectShareButtons();
+        });
+        CoursePlayerV2.on('hooks:contentDidChange', function(data) {
+
+            injectShareButtons();
         });
     }
 });
