@@ -31,6 +31,18 @@ i.fa.fa-twitter:before {
 
 i.fa.fa-twitter-square:before {
   content: "\e900";
+  font-family: 'kapow-x-twitter' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
 }
 
 
