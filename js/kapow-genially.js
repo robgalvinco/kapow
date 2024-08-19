@@ -25,10 +25,12 @@ $(document).ready(function(){
                       $("#course-player-footer .btn--incomplete button").click();
                       break;
                   case "hide_chapters":
-                      $(".course-player__left-drawer").hide();
+                      //$(".course-player__left-drawer").hide();
+                      $(".toga-icon-arrow-grow").click()
                       break;
                   case "show_chapters":
-                      $(".course-player__left-drawer").show();
+                      //$(".course-player__left-drawer").show();
+                      $(".toga-icon-arrow-shrink").click()
                       break;
               }
           },
