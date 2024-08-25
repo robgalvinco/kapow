@@ -1,6 +1,6 @@
 
 window.addEventListener('message', (e) => {
-    if (e?.data?.includes('Tally.FormLoaded')) {
+    if (e && e.data.includes('Tally.FormLoaded')) {
         const payload = JSON.parse(e.data).payload;
         // ...
         console.log("Tally Form loaded");
@@ -8,7 +8,7 @@ window.addEventListener('message', (e) => {
     }
 });   
 window.addEventListener('message', (e) => {
-    if (e?.data?.includes('Tally.FormSubmitted')) {
+    if (e && e.data.includes('Tally.FormSubmitted')) {
         const payload = JSON.parse(e.data).payload;
         // ...
         console.log("Tally form submitted");

@@ -115,12 +115,12 @@ $(document).ready(function() {
     
     function handleTallyResponse(event) {
         // Ensure the message contains 'Tally.FormSubmitted'
-        console.log("Tally submited",event);
-        if (event.data.includes('Tally.FormSubmitted')) {
+        console.log("Tally event",event);
+        if (event && event.data.includes('Tally.FormSubmitted')) {
             
             // Parse the message data to extract the payload
             const payload = JSON.parse(event.data).payload;
-            console.log("Tally submitted",payload);
+            console.log("Tally submitted payload: ",payload);
             
             // Extract the Tally ID from the payload
             const tallyId = payload.formId;
