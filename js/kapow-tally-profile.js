@@ -141,8 +141,16 @@ $(document).ready(function() {
             inputElement.val(tallyResponses);
             
             // Find and submit the corresponding form
+            /*
             var form = formGroup.closest('form');
             form.submit();
+            */
+            var submitButton = formGroup.closest('form').find('input[type="submit"], button[type="submit"]');
+            if (submitButton.length) {
+                submitButton.click();
+            } else {
+                console.error('Submit button not found.');
+            }
 
             console.log("Tally form submitted for ID: " + tallyId);
         }
