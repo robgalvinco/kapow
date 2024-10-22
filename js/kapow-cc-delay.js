@@ -1,3 +1,16 @@
+// add the following to the code view of a lesson (video, text) to control lesson specific delays
+/*
+<p class="kapow-ccdelay" data-delay="30">
+	<br>
+</p>
+*/
+
+// for a global delay on all lessons add this to SFC
+/*
+<script>
+    let kapowCCDelay = 10;
+</script>
+*/
 $(document).ready(function(){
 
     function startButtonDelay(delayTime) {
