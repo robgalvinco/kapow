@@ -1,11 +1,6 @@
 $(document).ready(function(){
 
-    // Function to hide and show a button based on the element with class 'ccdelay'
-    function startButtonDelay() {
-            var delayElement = $('.ccdelay');
-            // Get the data-delay value in seconds
-            var delayTime = parseInt(delayElement.attr('data-delay'), 10);
-            
+    function startButtonDelay(delayTime) {
             // Call the function to hide the button
             hideButton();
             
@@ -51,17 +46,28 @@ $(document).ready(function(){
             hideButton();
             // Look for the element
             window.setTimeout(() => {
-                var delayElement = $('.ccdelay');
-                
-                // If the element exists
-                if (delayElement.length) {
-                    console.log("found delay");
+            var delayElement = $('.kapow-ccdelay');
+            var delayTime = null;
+
+            // Check if delayElement exists and has a valid data-delay attribute
+            if (delayElement.length && delayElement.attr('data-delay')) {
+                console.log("found delay element with delay");
+                delayTime = parseInt(delayElement.attr('data-delay'), 10);  // Get delay value in seconds
+                hideButton();
+                startButtonDelay(delayTime);
+            } else {
+                console.log("did not find delay element or no valid delay value");
+
+                // Check for kapowCCDelay if no delayElement or invalid delay found
+                if (typeof kapowCCDelay !== 'undefined' && kapowCCDelay !== null) {
+                    console.log("Using global delay");
                     hideButton();
-                    startButtonDelay();
+                    startButtonDelay(kapowCCDelay);
                 } else {
-                    console.log("did not find delay");
+                    console.log("No global delay found, showing button immediately");
                     showButton();
-                }                
+                }
+            }              
             }, 500);    
 
 
