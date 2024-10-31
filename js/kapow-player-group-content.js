@@ -1,3 +1,22 @@
+/*
+Usage - surround content with a div tag that includes a class="group-content" 
+and an attribute data-groups="comma list,of group names"
+
+<div class="group-content" data-groups="group 1">
+	<p>Content Group 1</p>
+</div>
+<div class="group-content" data-groups="group 2">
+	<p>Content Group 2</p>
+</div>
+<div class="group-content" data-groups="group 1,group 2">
+	<p>Content Group 1 or 2</p>
+</div>
+
+PLace inside lessons that support text, and the custom completion page
+All group-content will be hidden at first and then be revealed if the
+student belongs to one of the groups
+
+*/
 $(document).ready(function(){
     let lastUrl = window.location.href;
     function process_group_content(){
