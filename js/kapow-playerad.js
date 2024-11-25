@@ -1,27 +1,18 @@
-/*
-<div class="kapow-ad" data-group="group1" data-autocomplete="false" data-mp4="https://import.cdn.thinkific.com/244754/74J3N4cSAek2mDY4fZpT_cnotheqj3djc72u2perg.mp4">&nbsp;</div>
-<div class="kapow-ad" data-group="group2" data-autocomplete="false"  data-mp4="https://import.cdn.thinkific.com/244754/2T95GtR1mfpL7i9uq9wI_cml0j7aq9n7s72scu4cg.mp4">&nbsp;</div>
-<div class="kapow-ad" data-group="default" data-autocomplete="false" data-mp4="https://import.cdn.thinkific.com/244754/GDyFp6GRRS1W0qUOFRYA_conthiovbf0c72uag9b0.mp4">&nbsp;</div>
-
-*/
-
-
-$(document).ready(function(){
+$(document).ready(function() {
     function clickContinueButton() {
-        // Find the button with the data-qa attribute and trigger a click event
         $('[data-qa="complete-continue__btn"]').click();
-    }    
-    function showad(videourl, isAutocompleteEnabled,courseid,lessonid) {
-        let adId = 'adShown-'+courseid+"-"+lessonid;
-        // Check if the ad has already been shown in this session
+    }
+
+    function showad(videourl, isAutocompleteEnabled, courseid, lessonid) {
+        let adId = 'adShown-' + courseid + "-" + lessonid;
+
         if (sessionStorage.getItem(adId) === 'true') {
-            return;  // Exit the function if the ad was already shown
+            return;
         }
-    
-        // Mark the ad as shown in session storage
+
         sessionStorage.setItem(adId, 'true');
-    
-        // Create a full-screen overlay with a video element
+
+        // Create a full-screen overlay with centered video and countdown
         const $overlay = $('<div>', {
             id: 'video-overlay',
             css: {
@@ -30,105 +21,102 @@ $(document).ready(function(){
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundColor: 'black',
-                zIndex: 9999,  // Ensures it stays on top
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',  // Semi-transparent black
+                zIndex: 9999,
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                flexDirection: 'column'
             }
         });
-    
+
         const $videoElement = $('<video>', {
-            src: videourl,  // Your new video URL
+            src: videourl,
             autoplay: true,
-            muted: false,  // If you want the video to have sound
+            muted: false,
             playsinline: true,
             css: {
-                width: '100%',
-                height: 'auto'
+                maxWidth: '80%',
+                maxHeight: '80%',
+                outline: 'none'
             }
         });
-    
-        // Append the video to the overlay
-        $overlay.append($videoElement);
-    
-        // Append the overlay to the body
+
+        // Create a new span for the countdown message with inline styling
+        const $countdownSpan = $('<span>', {
+            css: {
+                padding: '5px 10px',
+                backgroundColor: 'black',
+                color: 'white',
+                marginTop: '15px',
+                borderRadius: '5px',
+                fontSize: '16px',
+                textAlign: 'center',
+                display: 'inline-block'
+            }
+        });
+
+        // Append the video and countdown to the overlay
+        $overlay.append($videoElement, $countdownSpan);
         $('body').append($overlay);
-    
-        // Disable controls (user cannot interact with the video)
+
         $videoElement.prop('controls', false);
-    
-        // Listen for the video 'ended' event
+
+        // Update countdown in the span
+        function updateCountdown() {
+            const timeLeft = Math.ceil($videoElement[0].duration - $videoElement[0].currentTime);
+            $countdownSpan.text(`Your lesson will resume in ${timeLeft} seconds`);
+        }
+
+        // Start countdown update interval
+        $videoElement.on('play', function() {
+            countdownInterval = setInterval(updateCountdown, 1000);
+        });
+
+        // Stop countdown, remove the overlay after video ends
         $videoElement.on('ended', function() {
-            // Remove the overlay when the video ends
-            $overlay.remove();
+            clearInterval(countdownInterval);
+            $overlay.remove();  // Remove the overlay, including the countdown span
             if (isAutocompleteEnabled) {
                 clickContinueButton();
             }
         });
     }
 
-
-    if(typeof(CoursePlayerV2) !== 'undefined') {
+    if (typeof(CoursePlayerV2) !== 'undefined') {
         CoursePlayerV2.on('hooks:contentDidChange', function(data) {
-            // Look for the element
             window.setTimeout(() => {
-                // Get the user's groups from the Thinkific object
                 const userGroups = Thinkific.current_user.groups || [];
-
-                // Find all the kapow-ad elements
                 const $ads = $('.kapow-ad');
-                
-                // Variable to hold the video URL if found
+
                 let videoUrl = null;
-                // Initialize a variable for the boolean
                 let isAutocompleteEnabled = null;
                 let autocompleteAttr = null;
 
-                // Iterate through the user's groups to find the first matching ad
                 for (let i = 0; i < userGroups.length; i++) {
-                    const groupName = userGroups[i].name; // Access the "name" attribute
-                    console.log("Looking for user group: "+groupName);
+                    const groupName = userGroups[i].name;
                     const $ad = $ads.filter(`[data-group="${groupName}"]`);
-                    console.log($ad.length + " ads found");
                     if ($ad.length > 0) {
                         videoUrl = $ad.data('mp4');
-                        // Select the element and get the data-autocomplete attribute value
                         autocompleteAttr = $ad.attr('data-autocomplete');
-                        // Check if the attribute exists and contains "true" or "false"
-                        if (autocompleteAttr === "true") {
-                            isAutocompleteEnabled = true;
-                        } else if (autocompleteAttr === "false") {
-                            isAutocompleteEnabled = false;
-                        }
-                        console.log(videoUrl);
-                        console.log("showing ad for group: "+groupName);
+                        isAutocompleteEnabled = autocompleteAttr === "true";
                         break;
                     }
                 }
 
-                // If no group match was found, look for the default ad
                 if (!videoUrl) {
                     const $defaultAd = $ads.filter('[data-group="default"]');
                     if ($defaultAd.length > 0) {
-                        console.log("showing default ad");
                         videoUrl = $defaultAd.data('mp4');
                         autocompleteAttr = $defaultAd.attr('data-autocomplete');
-                        // Check if the attribute exists and contains "true" or "false"
-                        if (autocompleteAttr === "true") {
-                            isAutocompleteEnabled = true;
-                        } else if (autocompleteAttr === "false") {
-                            isAutocompleteEnabled = false;
-                        }                        
+                        isAutocompleteEnabled = autocompleteAttr === "true";
                     }
                 }
 
-                // If a video URL was found, call showad with the URL
                 if (videoUrl) {
-                    console.log("showing ad: "+videoUrl);
-                    showad(videoUrl,isAutocompleteEnabled,data.course.id, data.lesson.id);
-                }                
-            });            
+                    showad(videoUrl, isAutocompleteEnabled, data.course.id, data.lesson.id);
+                }
+            });
         });
     }
 });
