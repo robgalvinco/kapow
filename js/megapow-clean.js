@@ -325,6 +325,10 @@ user_list.each(function(){
               console.log("old menu",$(".header").first().html());
 
               $(".header").first().replaceWith(mmhtml);
+                $(".navbar-toggler").on("click", function () {
+                    $(this).toggleClass("collapsed"); // Toggle collapsed on button
+                    $("#navbarNav").toggleClass("show"); // Toggle show on navbarNav
+                });
                     //$( '.dropdown-toggle-text' ).dropdown()
           //}); 
     }
