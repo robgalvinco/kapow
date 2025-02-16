@@ -329,6 +329,16 @@ user_list.each(function(){
                     $(this).toggleClass("collapsed"); // Toggle collapsed on button
                     $("#navbarNav").toggleClass("show"); // Toggle show on navbarNav
                 });
+
+                $(document).on("click", '[data-megapowtoggle="dropdown"]', function (e) {
+                    e.preventDefault(); // Prevent default behavior
+
+                    var $parent = $(this).closest(".dropdown"); // Find closest dropdown parent
+                    var $dropdownMenu = $parent.children(".dropdown-menu"); // Find the dropdown menu
+
+                    $parent.toggleClass("show"); // Toggle show on parent
+                    $dropdownMenu.toggleClass("show"); // Toggle show on dropdown menu
+                });
                     //$( '.dropdown-toggle-text' ).dropdown()
           //}); 
     }
