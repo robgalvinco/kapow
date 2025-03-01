@@ -1265,6 +1265,8 @@ y=function(){x();return l()},H=function(){G=!0;f.off("touchmove",l);f.off("scrol
     function setPageTitleSpace() {
       
         var topSpaceHeaderHeight = getTopSpaceHeaderHeight();
+        console.log("topSpaceHeaderHeight:"+topSpaceHeaderHeight);
+        topSpaceHeaderHeight = 71; //hard code
         if ( ! $( '.navbar' ).hasClass( 'no-sticky' ) && ( $( '.navbar' ).hasClass( 'top-space' ) || $( '.navbar' ).hasClass( 'mobile-top-space' ) ) ) {
             $( 'body' ).css( 'padding-top', topSpaceHeaderHeight + 'px' );
         } else {
