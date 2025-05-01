@@ -594,6 +594,7 @@ y=function(){x();return l()},H=function(){G=!0;f.off("touchmove",l);f.off("scrol
 
     /****** Hide collaps on outside click ******/
     $( document ).on( 'touchstart click', 'body', function (e) {
+try {
         if ( ! $( e.target ).closest( '.navbar-nav' ).length ) {
             if( ! $( e.target ).closest( '.header-language' ).length ) {
                 // Close language menu
@@ -647,6 +648,14 @@ y=function(){x();return l()},H=function(){G=!0;f.off("touchmove",l);f.off("scrol
             $( '.search-form-wrapper' ).removeClass( 'active-form' );
             $( 'body' ).removeClass( 'show-search-popup' );
         }
+} catch (error) {
+  // Code to handle the error
+  console.error("An error occurred:", error.message);
+  // Optionally, perform alternative actions or log the error
+} finally {
+  // Code that executes regardless of whether an error occurred
+  console.log("This will always execute");
+}
     });
 
     /****** Navbar collapse classic menu event ******/
